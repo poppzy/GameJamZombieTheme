@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
 
         if (x != 0)
         {
-
             if (direction.x > 0)
                 m_Faceing = Direction.Right;
             else if (direction.x < 0)

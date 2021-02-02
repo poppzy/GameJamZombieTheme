@@ -14,13 +14,12 @@ public class GridManager : MonoBehaviour
             Destroy(this);
     }
 
-    void Start()
-    {
-        
-    }
+    [Header("Grid")]
+    public Vector2 m_GridSize;
+    public Vector2[,] m_Grid;
 
-    void Update()
+    private void Start()
     {
-        
+        m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
     }
 }
