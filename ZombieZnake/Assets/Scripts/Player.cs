@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public enum Direction: int
+    public enum Direction : int
     {
         Up = 0,
         Down,
@@ -14,47 +14,16 @@ public class Player : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private List<GameObject> m_PlayerZombies; //the list of zombies behind you
-    public float m_Speed = 1.0f; //the amount of second it takes to move
+    public float m_Speed = 0.5f; //the amount of meter moved per movementupdate 
     public Direction m_Faceing; //the direction you are facing
 
 
     //Private
-    private Coroutine movementIEnumerator; //the movementCoroutine
     private bool isAlive = true; //booleon for if the object is alive
 
     void Start()
     {
         m_PlayerZombies = new List<GameObject>();
-        movementIEnumerator = StartCoroutine(Movement());
-    }
-
-    public IEnumerator Movement()
-    {
-        while (isAlive)
-        {
-            yield return new WaitForSeconds(m_Speed);
-
-            switch (m_Faceing)
-            {
-                case Direction.Up:
-                    gameObject.transform.Translate(Vector2.up);
-                    break;
-                case Direction.Down:
-                    gameObject.transform.Translate(Vector2.down);
-                    break;
-                case Direction.Left:
-                    gameObject.transform.Translate(Vector2.left);
-                    break;
-                case Direction.Right:
-                    gameObject.transform.Translate(Vector2.right);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        StopCoroutine(movementIEnumerator);
-        yield return null;
     }
 
     private void Update()
@@ -73,6 +42,29 @@ public class Player : MonoBehaviour
             m_Faceing = Direction.Up;
         else if (direction.y < 0)
             m_Faceing = Direction.Down;
+    }
 
+    private void FixedUpdate()
+    {
+        while (isAlive)
+        {
+            switch (m_Faceing)
+            {
+                case Direction.Up:
+                    gameObject.transform.Translate(Vector2.up * m_Speed * Time.fixedDeltaTime, Space.World);
+                    break;
+                case Direction.Down:
+                    gameObject.transform.Translate(Vector2.down * m_Speed * Time.fixedDeltaTime, Space.World);
+                    break;
+                case Direction.Left:
+                    gameObject.transform.Translate(Vector2.left * m_Speed * Time.fixedDeltaTime, Space.World);
+                    break;
+                case Direction.Right:
+                    gameObject.transform.Translate(Vector2.right * m_Speed * Time.fixedDeltaTime, Space.World);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
