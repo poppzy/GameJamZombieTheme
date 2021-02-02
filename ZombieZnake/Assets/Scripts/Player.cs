@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private List<GameObject> m_PlayerZombies; //the list of zombies behind you
     public float m_Speed = 5f; //the amount of meter moved per movementupdate 
     public Direction m_Faceing; //the direction you are facing
-    public Vector2 position;
+    public Vector2 position; //the position of the object
 
     void Start()
     {
@@ -28,31 +28,25 @@ public class Player : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
-        position = new Vector2(this.transform.position.x, this.transform.position.y);
+        position = transform.position;
 
         Vector2 direction = new Vector2(x, y);
 
-        if (direction.x > 0)
+        if (x != 0)
         {
-            m_Faceing = Direction.Right;
-            Mathf.RoundToInt(this.transform.position.y);
-        }
-        else if (direction.x < 0)
-        {
-            m_Faceing = Direction.Left;
-            Mathf.RoundToInt(this.transform.position.y);
+
+            if (direction.x > 0)
+                m_Faceing = Direction.Right;
+            else if (direction.x < 0)
+                m_Faceing = Direction.Left;
         }
 
-        if (direction.y > 0)
+        if (y != 0)
         {
-            m_Faceing = Direction.Up;
-            Mathf.RoundToInt(this.transform.position.x);
-        }
-
-        else if (direction.y < 0)
-        {
-            m_Faceing = Direction.Down;
-            Mathf.RoundToInt(this.transform.position.x);
+            if (direction.y > 0)
+                m_Faceing = Direction.Up;
+            else if (direction.y < 0)
+                m_Faceing = Direction.Down;
         }
 
     }
@@ -62,16 +56,20 @@ public class Player : MonoBehaviour
         switch (m_Faceing)
         {
             case Direction.Up:
-                gameObject.transform.Translate(Vector2.up * m_Speed * Time.fixedDeltaTime, Space.World);
+                transform.Translate(Vector2.up * m_Speed * Time.fixedDeltaTime);
+                transform.position = (new Vector2(Mathf.Round(transform.position.x), transform.position.y));
                 break;
             case Direction.Down:
-                gameObject.transform.Translate(Vector2.down * m_Speed * Time.fixedDeltaTime, Space.World);
+                transform.Translate(Vector2.down * m_Speed * Time.fixedDeltaTime);
+                transform.position = (new Vector2(Mathf.Round(transform.position.x), transform.position.y));
                 break;
             case Direction.Left:
-                gameObject.transform.Translate(Vector2.left * m_Speed * Time.fixedDeltaTime, Space.World);
+                transform.Translate(Vector2.left * m_Speed * Time.fixedDeltaTime);
+                transform.position = new Vector2(transform.position.x, Mathf.Round(transform.position.y));
                 break;
             case Direction.Right:
-                gameObject.transform.Translate(Vector2.right * m_Speed * Time.fixedDeltaTime, Space.World);
+                transform.Translate(Vector2.right * m_Speed * Time.fixedDeltaTime);
+                transform.position = (new Vector2(transform.position.x, Mathf.Round(transform.position.y)));
                 break;
             default:
                 break;
