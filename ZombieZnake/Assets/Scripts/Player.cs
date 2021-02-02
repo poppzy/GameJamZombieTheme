@@ -14,12 +14,8 @@ public class Player : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private List<GameObject> m_PlayerZombies; //the list of zombies behind you
-    public float m_Speed = 0.5f; //the amount of meter moved per movementupdate 
+    public float m_Speed = 5f; //the amount of meter moved per movementupdate 
     public Direction m_Faceing; //the direction you are facing
-
-
-    //Private
-    private bool isAlive = true; //booleon for if the object is alive
 
     void Start()
     {
@@ -46,25 +42,22 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        while (isAlive)
+        switch (m_Faceing)
         {
-            switch (m_Faceing)
-            {
-                case Direction.Up:
-                    gameObject.transform.Translate(Vector2.up * m_Speed * Time.fixedDeltaTime, Space.World);
-                    break;
-                case Direction.Down:
-                    gameObject.transform.Translate(Vector2.down * m_Speed * Time.fixedDeltaTime, Space.World);
-                    break;
-                case Direction.Left:
-                    gameObject.transform.Translate(Vector2.left * m_Speed * Time.fixedDeltaTime, Space.World);
-                    break;
-                case Direction.Right:
-                    gameObject.transform.Translate(Vector2.right * m_Speed * Time.fixedDeltaTime, Space.World);
-                    break;
-                default:
-                    break;
-            }
+            case Direction.Up:
+                gameObject.transform.Translate(Vector2.up * m_Speed * Time.fixedDeltaTime, Space.World);
+                break;
+            case Direction.Down:
+                gameObject.transform.Translate(Vector2.down * m_Speed * Time.fixedDeltaTime, Space.World);
+                break;
+            case Direction.Left:
+                gameObject.transform.Translate(Vector2.left * m_Speed * Time.fixedDeltaTime, Space.World);
+                break;
+            case Direction.Right:
+                gameObject.transform.Translate(Vector2.right * m_Speed * Time.fixedDeltaTime, Space.World);
+                break;
+            default:
+                break;
         }
     }
 }
