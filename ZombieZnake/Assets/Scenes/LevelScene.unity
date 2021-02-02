@@ -297,6 +297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1067631057}
+  - component: {fileID: 1067631058}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -311,13 +312,25 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067631056}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.26708016, y: -3.6915653, z: -3.2111168}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1067631058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067631056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e89186eec490e24da65afad37925c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1823781685
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,5 +376,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerZombies: []
-  m_Speed: 0.5
+  m_Speed: 5
   m_Faceing: 0
