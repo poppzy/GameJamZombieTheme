@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamagable
 {
-    public int healthpoints { get; set; }
+    int healthpoints { get; }
 
     public void ChangeHealth(int _value);
 }
