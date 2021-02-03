@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     public float m_Speed = 5f; //the amount of meter moved per movementupdate 
     public Direction m_Faceing; //the direction you are facing
     public Vector2 position; //the position of the object
+    Vector2 direction;
+    Vector2 prevDirection;
 
     void Start()
     {
@@ -30,48 +32,56 @@ public class Player : MonoBehaviour
 
         position = transform.position;
 
-        Vector2 direction = new Vector2(x, y);
-
         if (x != 0)
         {
-            if (direction.x > 0)
+            if (x > 0)
+            {
                 m_Faceing = Direction.Right;
-            else if (direction.x < 0)
+                direction = Vector2.right;
+            }
+            else if (x < 0)
+            {
                 m_Faceing = Direction.Left;
+                direction = Vector2.left;
+            }
         }
 
         if (y != 0)
         {
-            if (direction.y > 0)
+            if (y > 0)
+            {
                 m_Faceing = Direction.Up;
-            else if (direction.y < 0)
+                direction = Vector2.up;
+            }
+            else if (y < 0)
+            {
                 m_Faceing = Direction.Down;
+                direction = Vector2.down;
+            }
         }
 
+        transform.Translate(direction * m_Speed * Time.fixedDeltaTime);
+
+        /*SnapToGrid();*/
     }
 
-    private void FixedUpdate()
+    public void SnapToGrid()
     {
-        switch (m_Faceing)
+        if (m_Faceing == Direction.Up && Input.GetAxisRaw("Horizontal") != 0)
         {
-            case Direction.Up:
-                transform.Translate(Vector2.up * m_Speed * Time.fixedDeltaTime);
-                transform.position = (new Vector2(Mathf.Round(transform.position.x), transform.position.y));
-                break;
-            case Direction.Down:
-                transform.Translate(Vector2.down * m_Speed * Time.fixedDeltaTime);
-                transform.position = (new Vector2(Mathf.Round(transform.position.x), transform.position.y));
-                break;
-            case Direction.Left:
-                transform.Translate(Vector2.left * m_Speed * Time.fixedDeltaTime);
-                transform.position = new Vector2(transform.position.x, Mathf.Round(transform.position.y));
-                break;
-            case Direction.Right:
-                transform.Translate(Vector2.right * m_Speed * Time.fixedDeltaTime);
-                transform.position = (new Vector2(transform.position.x, Mathf.Round(transform.position.y)));
-                break;
-            default:
-                break;
+            transform.position = (new Vector2(transform.position.x, Mathf.Ceil(transform.position.y)));
+        }
+        else if (m_Faceing == Direction.Down && Input.GetAxisRaw("Horizontal") != 0)
+        {
+            transform.position = (new Vector2(transform.position.x, Mathf.Floor(transform.position.y)));
+        }
+        else if (m_Faceing == Direction.Left && Input.GetAxisRaw("Vertical") != 0)
+        {
+            transform.position = new Vector2(Mathf.Floor(transform.position.x), transform.position.y);
+        }
+        else if (m_Faceing == Direction.Right && Input.GetAxisRaw("Vertical") != 0)
+        {
+            transform.position = (new Vector2(Mathf.Ceil(transform.position.x), transform.position.y));
         }
     }
 }
