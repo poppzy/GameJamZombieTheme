@@ -8,4 +8,5 @@ public interface IDamagable
     bool isAlive { get; }
 
     public void ChangeHealth(int _value);
+    public void Die();
 }

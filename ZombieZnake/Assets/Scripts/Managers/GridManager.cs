@@ -16,6 +16,11 @@ public class GridManager : MonoBehaviour
         m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
         CreateGrid(m_GridSize.x, m_GridSize.y);
         m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
+        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 1));
+        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 2));
+        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 3));
+        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 4));
+
     }
 
     [Header("Grid")]
@@ -51,17 +56,25 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     public Vector2 GetGridPosition(int xVariable, int yVariable, GameObject _object)
     {
+        IDamagable IDamageble = _object.GetComponent<IDamagable>();
+
         //check if object is traying to go out of bounds
         if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.x)
-            if(_object.GetComponent<IDamagable>() != null)
+            if (IDamageble != null)
             {
                 //deal damage if the object is damageble, and return the current position
-                _object.GetComponent<IDamagable>().ChangeHealth(-1);
+                IDamageble.ChangeHealth(-IDamageble.healthpoints);
                 return m_Grid[(int)m_PlayerGridPositions[0].x, (int)m_PlayerGridPositions[0].y];
             }
 
+        for (int i = 0; i < m_PlayerGridPositions.Count; i++)
+        {
+            if (i != 0)
+                if (m_PlayerGridPositions[0] == m_PlayerGridPositions[i])
+                    IDamageble.ChangeHealth(-IDamageble.healthpoints);
+        }
+
         //return and change the new position
-        m_PlayerGridPositions[0] = new Vector2(xVariable, yVariable);
         return m_Grid[xVariable, yVariable];
     }
 }

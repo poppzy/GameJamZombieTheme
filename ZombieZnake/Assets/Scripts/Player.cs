@@ -30,7 +30,9 @@ public class Player : MonoBehaviour
         foreach (var child in children)
         {
             if (child.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
                 m_PlayerZombies.Add(child.gameObject);
+            }
         }
         healthScript = GetComponent<Health>();
         grid = GridManager.instance;
@@ -45,17 +47,17 @@ public class Player : MonoBehaviour
 
         if (y != 0)
         {
-            if (y > 0)
+            if (y > 0 && m_Faceing != Direction.Down && m_Faceing != Direction.Up)
                 m_Faceing = Direction.Up;
-            else if (y < 0)
+            else if (y < 0 && m_Faceing != Direction.Up && m_Faceing != Direction.Down)
                 m_Faceing = Direction.Down;
         }
 
         if (x != 0)
         {
-            if (x < 0)
+            if (x < 0 && m_Faceing != Direction.Right && m_Faceing != Direction.Left)
                 m_Faceing = Direction.Left;
-            else if (x > 0)
+            else if (x > 0 && m_Faceing != Direction.Left && m_Faceing != Direction.Right)
                 m_Faceing = Direction.Right;
         }
     }
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour
 
             //the desired position on the grid
             Vector2 desiredPosition = grid.m_PlayerGridPositions[0];
+            Vector2 previousPosition = Vector2.zero;
 
             switch (m_Faceing)
             {
@@ -91,8 +94,13 @@ public class Player : MonoBehaviour
 
             for (int i = 0; i < m_PlayerZombies.Count; i++)
             {
+                if (i != 0)
+                    desiredPosition = previousPosition;
+
                 //update the position using the grid
                 m_PlayerZombies[i].transform.position = grid.GetGridPosition((int)desiredPosition.x, (int)desiredPosition.y, gameObject) * m_StepSize;
+                previousPosition = grid.m_PlayerGridPositions[i];
+                grid.m_PlayerGridPositions[i] = new Vector2(desiredPosition.x, desiredPosition.y);
             }
         }
     }

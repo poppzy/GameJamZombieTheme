@@ -22,6 +22,13 @@ public class Health : MonoBehaviour , IDamagable
         healthpoints += _value;
 
         if (healthpoints <= 0)
-            isAlive = false;
+            Die();
+    }
+
+    public void Die()
+    {
+        isAlive = false;
+        StopAllCoroutines();
+        Destroy(gameObject);
     }
 }
