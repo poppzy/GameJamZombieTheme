@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1375829349866002021}
   - component: {fileID: 1375829349866002020}
+  - component: {fileID: 7123069620026971951}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -46,9 +47,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerZombies:
   - {fileID: 1375829350984922367}
-  m_Speed: 1
+  m_MovementUpdate: 0.2
+  m_StepSize: 1
   m_Faceing: 0
   position: {x: 0, y: 0}
+--- !u!114 &7123069620026971951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375829349866002022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f10f60d835a2c9458998472454f9d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StartingHealth: 10
 --- !u!1 &1375829350984922367
 GameObject:
   m_ObjectHideFlags: 0

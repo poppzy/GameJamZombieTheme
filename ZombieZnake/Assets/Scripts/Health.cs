@@ -9,14 +9,19 @@ public class Health : MonoBehaviour , IDamagable
 
     //private
     public int healthpoints { get; private set; }
+    public bool isAlive { get; private set; }
 
     void Start()
     {
         healthpoints = m_StartingHealth;
+        isAlive = true;
     }
 
     public void ChangeHealth(int _value)
     {
         healthpoints += _value;
+
+        if (healthpoints <= 0)
+            isAlive = false;
     }
 }

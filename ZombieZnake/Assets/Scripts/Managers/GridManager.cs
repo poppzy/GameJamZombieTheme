@@ -12,6 +12,10 @@ public class GridManager : MonoBehaviour
             instance = this;
         else
             Destroy(this);
+
+        m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
+        CreateGrid(m_GridSize.x, m_GridSize.y);
+        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
     }
 
     [Header("Grid")]
@@ -21,13 +25,6 @@ public class GridManager : MonoBehaviour
 
     [Header("Objects")]
     public List<Vector2> m_PlayerGridPositions = new List<Vector2>(); //the player location on the grid
-
-    private void Start()
-    {
-        m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
-        CreateGrid(m_GridSize.x, m_GridSize.y);
-        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
-    }
 
     /// <summary>
     /// Create a grid using the a 2D array.
@@ -41,7 +38,7 @@ public class GridManager : MonoBehaviour
             for (int x = 0; x < _width; x++)
             {
                 m_Grid[x, y] = new Vector2(m_GridOffset.x + x, m_GridOffset.y - y);
-                Debug.Log($"{x} = {m_GridOffset.x + x}, {y} = {m_GridOffset.y - y}.");
+                //Debug.Log($"{x} = {m_GridOffset.x + x}, {y} = {m_GridOffset.y - y}.");
             }
         }
     }
