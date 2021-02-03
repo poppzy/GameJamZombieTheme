@@ -49,8 +49,19 @@ public class GridManager : MonoBehaviour
     /// <param name="xVariable">The width of the grid</param>
     /// <param name="yVariable">The length of the grid</param>
     /// <returns></returns>
-    public Vector2 GetGridPosition(int xVariable, int yVariable)
+    public Vector2 GetGridPosition(int xVariable, int yVariable, GameObject _object)
     {
+        //check if object is traying to go out of bounds
+        if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.x)
+            if(_object.GetComponent<IDamagable>() != null)
+            {
+                //deal damage if the object is damageble, and return the current position
+                _object.GetComponent<IDamagable>().ChangeHealth(-1);
+                return m_Grid[(int)m_PlayerGridPositions[0].x, (int)m_PlayerGridPositions[0].y];
+            }
+
+        //return and change the new position
+        m_PlayerGridPositions[0] = new Vector2(xVariable, yVariable);
         return m_Grid[xVariable, yVariable];
     }
 }

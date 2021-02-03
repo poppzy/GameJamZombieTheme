@@ -18,17 +18,16 @@ public class Player : MonoBehaviour
     public float m_MovementUpdate = 0.2f; //the amount of meter moved per movementupdate 
     public float m_StepSize = 1f;
     public Direction m_Faceing; //the direction you are facing
-    public Vector2 position; //the position of the object
 
     //private
     private Health healthScript;
-    private GridManager gridInst;
+    private GridManager grid;
 
     void Start()
     {
         m_PlayerZombies = new List<GameObject>();
         healthScript = GetComponent<Health>();
-        gridInst = GridManager.instance;
+        grid = GridManager.instance;
 
         StartCoroutine(Movement());
     }
@@ -37,8 +36,6 @@ public class Player : MonoBehaviour
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-
-        position = transform.position;
 
         if (y != 0)
         {
@@ -59,31 +56,35 @@ public class Player : MonoBehaviour
 
     private IEnumerator Movement()
     {
-        Debug.Log(healthScript.isAlive);
-
+        //check if object is alive
         while (healthScript.isAlive)
         {
+            //wait for {m_MovementUpdate} amount of seconds
             yield return new WaitForSeconds(m_MovementUpdate);
+
+            //the desired position on the grid
+            Vector2 desiredPosition = grid.m_PlayerGridPositions[0];
 
             switch (m_Faceing)
             {
                 case Direction.Up:
-                    gridInst.m_PlayerGridPositions[0] += new Vector2(0, -1);
+                    desiredPosition += new Vector2(0, -1);
                     break;
                 case Direction.Down:
-                    gridInst.m_PlayerGridPositions[0] += new Vector2(0, 1);
+                    desiredPosition += new Vector2(0, 1);
                     break;
                 case Direction.Left:
-                    gridInst.m_PlayerGridPositions[0] += new Vector2(-1, 0);
+                    desiredPosition += new Vector2(-1, 0);
                     break;
                 case Direction.Right:
-                    gridInst.m_PlayerGridPositions[0] += new Vector2(1, 0);
+                    desiredPosition += new Vector2(1, 0);
                     break;
                 default:
                     break;
             }
 
-            transform.position = gridInst.GetGridPosition((int)gridInst.m_PlayerGridPositions[0].x, (int)gridInst.m_PlayerGridPositions[0].y) * m_StepSize;
+            //update the position using the grid
+            m_PlayerZombies.transform.position = grid.GetGridPosition((int)desiredPosition.x, (int)desiredPosition.y, gameObject) * m_StepSize;
         }
     }
 

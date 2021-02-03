@@ -50,7 +50,6 @@ MonoBehaviour:
   m_MovementUpdate: 0.2
   m_StepSize: 1
   m_Faceing: 0
-  position: {x: 0, y: 0}
 --- !u!114 &7123069620026971951
 MonoBehaviour:
   m_ObjectHideFlags: 0
