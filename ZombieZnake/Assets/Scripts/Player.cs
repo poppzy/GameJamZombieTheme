@@ -13,16 +13,19 @@ public class Player : MonoBehaviour
     }
 
     [Header("Player")]
-    public Stack<GameObject> m_PlayerZombies; //the list of zombies behind you
+    public List<GameObject> m_PlayerZombies; //the list of zombies behind you
     public float m_Speed = 5f; //the amount of meter moved per movementupdate 
     public Direction m_Faceing; //the direction you are facing
     public Vector2 position; //the position of the object
     Vector2 direction;
-    Vector2 prevDirection;
+
+    //private
+    private GridManager gridInst;
 
     void Start()
     {
-        m_PlayerZombies = new Stack<GameObject>();
+        m_PlayerZombies = new List<GameObject>();
+        gridInst = GridManager.instance;
     }
 
     private void Update()
@@ -34,15 +37,15 @@ public class Player : MonoBehaviour
 
         if (x != 0)
         {
-            if (x > 0)
+            if (x > 0 || m_Faceing == Direction.Right)
             {
                 m_Faceing = Direction.Right;
-                direction = Vector2.right;
+                gridInst.m_PlayerGridPositions[0] += new Vector2(1, 0);
             }
-            else if (x < 0)
+            else if (x < 0 || m_Faceing == Direction.Left)
             {
                 m_Faceing = Direction.Left;
-                direction = Vector2.left;
+                gridInst.m_PlayerGridPositions[0] += new Vector2(-1, 0);
             }
         }
 
@@ -51,16 +54,18 @@ public class Player : MonoBehaviour
             if (y > 0)
             {
                 m_Faceing = Direction.Up;
-                direction = Vector2.up;
+                gridInst.m_PlayerGridPositions[0] += new Vector2(0, -1);
             }
             else if (y < 0)
             {
                 m_Faceing = Direction.Down;
-                direction = Vector2.down;
+                gridInst.m_PlayerGridPositions[0] += new Vector2(0, 1);
             }
         }
 
-        transform.Translate(direction * m_Speed * Time.fixedDeltaTime);
+        transform.position = gridInst.GetGridPosition((int)gridInst.m_PlayerGridPositions[0].x, (int)gridInst.m_PlayerGridPositions[0].y);
+
+        //transform.Translate(direction * m_Speed * Time.deltaTime);
 
         /*SnapToGrid();*/
     }

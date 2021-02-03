@@ -19,10 +19,14 @@ public class GridManager : MonoBehaviour
     public Vector2 m_GridOffset;
     public Vector2[,] m_Grid;
 
+    [Header("Objects")]
+    public List<Vector2> m_PlayerGridPositions = new List<Vector2>(); //the player location on the grid
+
     private void Start()
     {
         m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
         CreateGrid(m_GridSize.x, m_GridSize.y);
+        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
     }
 
     /// <summary>
@@ -32,11 +36,12 @@ public class GridManager : MonoBehaviour
     /// <param name="_length"></param>
     private void CreateGrid(float _width, float _length)
     {
-        for (int x = 0; x < _width; x++)
+        for (int y = 0; y < _length; y++)
         {
-            for (int y = 0; y < _length; y++)
+            for (int x = 0; x < _width; x++)
             {
-                m_Grid[x, y] = new Vector2(m_GridOffset.x + x, m_GridOffset.y + y);
+                m_Grid[x, y] = new Vector2(m_GridOffset.x + x, m_GridOffset.y - y);
+                Debug.Log($"{x} = {m_GridOffset.x + x}, {y} = {m_GridOffset.y - y}.");
             }
         }
     }
@@ -44,11 +49,11 @@ public class GridManager : MonoBehaviour
     /// <summary>
     /// Get the position of the x and y value in the Grid Array.
     /// </summary>
-    /// <param name="x">The width of the grid</param>
-    /// <param name="y">The length of the grid</param>
+    /// <param name="xVariable">The width of the grid</param>
+    /// <param name="yVariable">The length of the grid</param>
     /// <returns></returns>
-    public Vector2 GetGridPosition(int x, int y)
+    public Vector2 GetGridPosition(int xVariable, int yVariable)
     {
-        return m_Grid[x, y];
+        return m_Grid[xVariable, yVariable];
     }
 }
