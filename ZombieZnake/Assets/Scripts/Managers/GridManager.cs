@@ -41,8 +41,14 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void MoveOnGrid(float x, float y)
+    /// <summary>
+    /// Get the position of the x and y value in the Grid Array.
+    /// </summary>
+    /// <param name="x">The width of the grid</param>
+    /// <param name="y">The length of the grid</param>
+    /// <returns></returns>
+    public Vector2 GetGridPosition(int x, int y)
     {
-
+        return m_Grid[x, y];
     }
 }
