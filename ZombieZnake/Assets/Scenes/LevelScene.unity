@@ -249,8 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e89186eec490e24da65afad37925c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GridSize: {x: 100, y: 100}
-  m_GridOffset: {x: -50, y: 50}
+  m_GridSize: {x: 70, y: 40}
+  m_GridOffset: {x: -35, y: 20}
   m_PlayerGridPositions: []
 --- !u!1001 &1375829351553394003
 PrefabInstance:

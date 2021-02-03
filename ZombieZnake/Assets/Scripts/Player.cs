@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
 
     [Header("Player")]
     public List<GameObject> m_PlayerZombies; //the list of zombies behind you
-    public float m_MovementUpdate = 0.2f; //the amount of meter moved per movementupdate 
-    public float m_StepSize = 1f;
+    public float m_MovementUpdate = 0.5f; //the amount of meter moved per movementupdate 
+    public float m_StepSize = 1f; //the amount of steps taken per movementupdate
     public Direction m_Faceing; //the direction you are facing
 
     //private
@@ -26,6 +26,12 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_PlayerZombies = new List<GameObject>();
+        Transform[] children = GetComponentsInChildren<Transform>();
+        foreach (var child in children)
+        {
+            if (child.gameObject.layer == LayerMask.NameToLayer("Player"))
+                m_PlayerZombies.Add(child.gameObject);
+        }
         healthScript = GetComponent<Health>();
         grid = GridManager.instance;
 
@@ -83,28 +89,11 @@ public class Player : MonoBehaviour
                     break;
             }
 
-            //update the position using the grid
-            m_PlayerZombies.transform.position = grid.GetGridPosition((int)desiredPosition.x, (int)desiredPosition.y, gameObject) * m_StepSize;
+            for (int i = 0; i < m_PlayerZombies.Count; i++)
+            {
+                //update the position using the grid
+                m_PlayerZombies[i].transform.position = grid.GetGridPosition((int)desiredPosition.x, (int)desiredPosition.y, gameObject) * m_StepSize;
+            }
         }
     }
-
-    //public void SnapToGrid()
-    //{
-    //    if (m_Faceing == Direction.Up && Input.GetAxisRaw("Horizontal") != 0)
-    //    {
-    //        transform.position = (new Vector2(transform.position.x, Mathf.Ceil(transform.position.y)));
-    //    }
-    //    else if (m_Faceing == Direction.Down && Input.GetAxisRaw("Horizontal") != 0)
-    //    {
-    //        transform.position = (new Vector2(transform.position.x, Mathf.Floor(transform.position.y)));
-    //    }
-    //    else if (m_Faceing == Direction.Left && Input.GetAxisRaw("Vertical") != 0)
-    //    {
-    //        transform.position = new Vector2(Mathf.Floor(transform.position.x), transform.position.y);
-    //    }
-    //    else if (m_Faceing == Direction.Right && Input.GetAxisRaw("Vertical") != 0)
-    //    {
-    //        transform.position = (new Vector2(Mathf.Ceil(transform.position.x), transform.position.y));
-    //    }
-    //}
 }
