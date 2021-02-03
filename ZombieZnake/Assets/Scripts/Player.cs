@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         }
         healthScript = GetComponent<Health>();
         grid = GridManager.instance;
-        inputQueue = new List<int>();
+        //inputQueue = new List<int>();
 
         StartCoroutine(Movement());
     }

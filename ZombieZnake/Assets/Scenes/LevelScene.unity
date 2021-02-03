@@ -260,6 +260,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1375829349866002020, guid: a01ed2eb67b81174cb90d2438e8a92a7, type: 3}
+      propertyPath: m_MovementUpdate
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1375829349866002020, guid: a01ed2eb67b81174cb90d2438e8a92a7, type: 3}
       propertyPath: Cm_MovementUpdate
       value: 1
       objectReference: {fileID: 0}
