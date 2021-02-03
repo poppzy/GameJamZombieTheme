@@ -13,14 +13,14 @@ public class Player : MonoBehaviour
     }
 
     [Header("Player")]
-    [SerializeField] private List<GameObject> m_PlayerZombies; //the list of zombies behind you
+    public Stack<GameObject> m_PlayerZombies; //the list of zombies behind you
     public float m_Speed = 5f; //the amount of meter moved per movementupdate 
     public Direction m_Faceing; //the direction you are facing
     public Vector2 position; //the position of the object
 
     void Start()
     {
-        m_PlayerZombies = new List<GameObject>();
+        m_PlayerZombies = new Stack<GameObject>();
     }
 
     private void Update()
