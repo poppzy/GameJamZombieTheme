@@ -33,8 +33,17 @@ public class Human : MonoBehaviour
         {
             yield return new WaitForSeconds(GridManager.instance.m_MovementUpdate);
 
-            int x = Random.Range(-1, 2);
-            int y = Random.Range(-1, 2);
+            /*//move in a random direction
+            if (Random.Range((int)0, (int)2) == 1 ? true : false)
+            {
+                int rad = Random.Range((int)0, (int)2);
+                if (x)
+            }
+            else
+            {
+                int rad = Random.Range((int)0, (int)2);
+
+            }*/
         }
     }
 }
