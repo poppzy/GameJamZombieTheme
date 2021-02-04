@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    public static Player instance;
+    public static PlayerController instance;
 
     private void Awake()
     {

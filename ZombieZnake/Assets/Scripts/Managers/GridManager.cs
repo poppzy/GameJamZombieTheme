@@ -23,9 +23,11 @@ public class GridManager : MonoBehaviour
     {
         StartCoroutine(SpawnHumans());
 
-        m_PlayerGridLocations.Add(new GridObject(Player.instance.m_PlayerZombies[0], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2)));
-        m_PlayerGridLocations.Add(new GridObject(Player.instance.m_PlayerZombies[1], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 1)));
-        m_PlayerGridLocations.Add(new GridObject(Player.instance.m_PlayerZombies[2], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 2)));
+        //spawn the first 3 zombies on the player
+        for (int i = 0; i < PlayerController.instance.m_PlayerZombies.Count; i++)
+        {
+            m_PlayerGridLocations.Add(new GridObject(PlayerController.instance.m_PlayerZombies[i], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + i)));
+        }
     }
 
     [Header("Grid")]
@@ -66,7 +68,7 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     public Vector2 GetPlayerGridPosition(int xVariable, int yVariable)
     {
-        IDamagable IDamageble = Player.instance.GetComponent<IDamagable>();
+        IDamagable IDamageble = PlayerController.instance.GetComponent<IDamagable>();
 
         //check if object is traying to go out of bounds
         if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.x)
@@ -95,8 +97,8 @@ public class GridManager : MonoBehaviour
 
                 //TODO: maby add score
 
-                GameObject zombie = Instantiate(Player.instance.m_ZombiePrefab, Player.instance.gameObject.transform);
-                Player.instance.m_PlayerZombies.Add(zombie);
+                GameObject zombie = Instantiate(PlayerController.instance.m_ZombiePrefab, PlayerController.instance.gameObject.transform);
+                PlayerController.instance.m_PlayerZombies.Add(zombie);
                 m_PlayerGridLocations.Add(new GridObject(zombie, m_PlayerGridLocations[m_PlayerGridLocations.Count - 1].gridLocation));
             }
         }
@@ -111,7 +113,7 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator SpawnHumans()
     {
-        IDamagable playerIDamageble = Player.instance.GetComponent<IDamagable>();
+        IDamagable playerIDamageble = PlayerController.instance.GetComponent<IDamagable>();
 
         while (playerIDamageble.isAlive)
         {
@@ -131,10 +133,11 @@ public class GridManager : MonoBehaviour
 
                 m_HumanGridLocations.Add(new GridObject(human, new Vector2(x, y)));
 
-                human.transform.position = m_Grid[(int)m_HumanGridLocations[m_HumanGridLocations.Count-1].gridLocation.x, (int)m_HumanGridLocations[m_HumanGridLocations.Count-1].gridLocation.y];
+                human.transform.position = m_Grid[(int)m_HumanGridLocations[m_HumanGridLocations.Count - 1].gridLocation.x, (int)m_HumanGridLocations[m_HumanGridLocations.Count - 1].gridLocation.y];
             }
         }
     }
+
 
     [Serializable]
     public struct GridObject
