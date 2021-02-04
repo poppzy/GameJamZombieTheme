@@ -15,14 +15,19 @@ public class UI_Manager : MonoBehaviour
             Destroy(this);
     }
 
+    [Header("UI")]
 
+    //private
     private TextMeshProUGUI scoreText;
+    private GameObject gameOverScreen;
     private int startingPoints = 0;
     private int currentPoints;
 
     void Start()
     {
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+        gameOverScreen = GameObject.Find("GameOverScreen");
+        gameOverScreen.SetActive(false);
         StartScore();
     }
 
@@ -40,5 +45,11 @@ public class UI_Manager : MonoBehaviour
     void UpdateCurrentPoints()
     {
         scoreText.text = currentPoints.ToString();
+    }
+
+    public void ShowGameOver()
+    {
+        gameOverScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 }
