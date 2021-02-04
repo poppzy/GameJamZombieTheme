@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17677ab46842c7640948e8a999e3e9c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ZombiePrefab: {fileID: 4877551053689698915, guid: 0c2bc32b471a9f14fb2f7b35ee35396c, type: 3}
   m_PlayerZombies:
   - {fileID: 1375829350984922367}
   - {fileID: 4279607805891182641}
