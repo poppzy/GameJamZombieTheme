@@ -14,9 +14,9 @@ public class GridManager : MonoBehaviour
         else
             Destroy(this);
 
+        //create the grid for all objects to move on
         m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
         CreateGrid(m_GridSize.x, m_GridSize.y);
-
     }
 
     private void Start()
@@ -38,9 +38,9 @@ public class GridManager : MonoBehaviour
     public List<GridObject> m_HumanGridLocations = new List<GridObject>(); //the human locations on the grid
 
     [Header("Human")]
-    public GameObject m_HumanPrefab;
-    public float m_HumanSpawnDelay = 10f;
-    public Vector2 m_HumansSpawnedPerCycle = new Vector2(1, 6);
+    public GameObject m_HumanPrefab; //the human prefab
+    public float m_HumanSpawnDelay = 10f; //the time in seconds it can take for humans to spawn
+    public Vector2 m_HumansSpawnedPerCycle = new Vector2(1, 6); //the min and max amount of humans that can spawn per cycle
 
     /// <summary>
     /// Create a grid using the a 2D array.
@@ -85,13 +85,19 @@ public class GridManager : MonoBehaviour
                     IDamageble.ChangeHealth(-IDamageble.healthpoints);
         }
 
-        foreach (var humans in m_HumanGridLocations)
+        //check if you hit a human
+        for (int i = 0; i < m_HumanGridLocations.Count; i++)
         {
-            if (m_PlayerGridLocations[0].gridLocation == humans.gridLocation)
+            if (m_PlayerGridLocations[0].gridLocation == m_HumanGridLocations[i].gridLocation)
             {
-                Destroy(humans.gridObject);
+                Destroy(m_HumanGridLocations[i].gridObject);
+                m_HumanGridLocations.RemoveAt(i);
 
-                
+                //TODO: maby add score
+
+                GameObject zombie = Instantiate(Player.instance.m_ZombiePrefab, Player.instance.gameObject.transform);
+                Player.instance.m_PlayerZombies.Add(zombie);
+                m_PlayerGridLocations.Add(new GridObject(zombie, m_PlayerGridLocations[m_PlayerGridLocations.Count - 1].gridLocation));
             }
         }
 

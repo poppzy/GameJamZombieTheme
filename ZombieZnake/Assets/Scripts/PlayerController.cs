@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
         else
             Destroy(this);
 
+        //create 3 zombie objects
         m_PlayerZombies = new List<GameObject>();
         Transform[] children = GetComponentsInChildren<Transform>();
         foreach (var child in children)
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     }
 
     [Header("Player")]
+    public GameObject m_ZombiePrefab; //the prefab of the zombie
     public List<GameObject> m_PlayerZombies; //the list of zombies behind you
     public float m_MovementUpdate = 0.5f; //the amount of meter moved per movementupdate 
     public float m_StepSize = 1f; //the amount of steps taken per movementupdate
