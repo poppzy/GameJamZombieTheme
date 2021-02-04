@@ -1444,8 +1444,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2209733062411004308, guid: e8c310b3ff5745d47b1b663d69424ec4, type: 3}
         m_TargetAssemblyTypeName: SceneManagerX, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 3
+        m_MethodName: Quit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

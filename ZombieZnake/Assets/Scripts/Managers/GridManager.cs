@@ -100,7 +100,7 @@ public class GridManager : MonoBehaviour
                 Destroy(m_HumanGridLocations[i].gridObject);
                 m_HumanGridLocations.RemoveAt(i);
 
-                //TODO: maby add score
+                UI_Manager.instance.AddScore(1);
 
                 //spawn a new zombie and set it to the end of the line
                 GameObject zombie = Instantiate(PlayerController.instance.m_ZombiePrefab, PlayerController.instance.gameObject.transform);
