@@ -120,17 +120,23 @@ public class GridManager : MonoBehaviour
                 int x = UnityEngine.Random.Range(0, (int)m_GridSize.x);
                 int y = UnityEngine.Random.Range(0, (int)m_GridSize.y);
 
-                m_HumanGridLocations.Add(new GridObject());
+                m_HumanGridLocations.Add(new GridObject(human, new Vector2(x, y)));
 
-                human.transform.position = m_Grid[(int)m_HumanGridLocations[m_HumanGridLocations.Count-1].x, (int)m_HumanGridLocations[m_HumanGridLocations.Count-1].y];
+                human.transform.position = m_Grid[(int)m_HumanGridLocations[m_HumanGridLocations.Count-1].gridLocation.x, (int)m_HumanGridLocations[m_HumanGridLocations.Count-1].gridLocation.y];
             }
         }
     }
 
     [Serializable]
-    struct GridObject
+    public struct GridObject
     {
         public GameObject gridObject;
         public Vector2 gridLocation;
+
+        public GridObject(GameObject _gridObject, Vector2 _gridLocation)
+        {
+            gridObject = _gridObject;
+            gridLocation = _gridLocation;
+        }
     }
 }
