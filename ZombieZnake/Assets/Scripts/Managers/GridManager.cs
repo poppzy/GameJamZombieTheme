@@ -65,7 +65,7 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the position of the x and y value in the Grid Array.
+    /// Get the player position of the x and y value in the grid array.
     /// </summary>
     /// <param name="xVariable">The width of the grid</param>
     /// <param name="yVariable">The length of the grid</param>
@@ -74,8 +74,8 @@ public class GridManager : MonoBehaviour
     {
         IDamagable IDamageble = PlayerController.instance.GetComponent<IDamagable>();
 
-        //check if object is traying to go out of bounds
-        if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.x)
+        //check if object is trying to go out of bounds
+        if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.y)
             if (IDamageble != null)
             {
                 //deal damage if the object is damageble, and return the current position
@@ -91,19 +91,66 @@ public class GridManager : MonoBehaviour
                     IDamageble.ChangeHealth(-IDamageble.healthpoints);
         }
 
-        //check if you hit a human
+        //check if you hit a human, if so eat it and grow larger
         for (int i = 0; i < m_HumanGridLocations.Count; i++)
         {
             if (m_PlayerGridLocations[0].gridLocation == m_HumanGridLocations[i].gridLocation)
             {
+                //destroy the human you hit, and remove it from the array
                 Destroy(m_HumanGridLocations[i].gridObject);
                 m_HumanGridLocations.RemoveAt(i);
 
                 //TODO: maby add score
 
+                //spawn a new zombie and set it to the end of the line
                 GameObject zombie = Instantiate(PlayerController.instance.m_ZombiePrefab, PlayerController.instance.gameObject.transform);
                 PlayerController.instance.m_PlayerZombies.Add(zombie);
                 m_PlayerGridLocations.Add(new GridObject(zombie, m_PlayerGridLocations[m_PlayerGridLocations.Count - 1].gridLocation));
+            }
+        }
+
+        //return and change the new position
+        return m_Grid[xVariable, yVariable];
+    }
+
+    /// <summary>
+    /// Get the human position of the x and y value in the grid array.
+    /// </summary>
+    /// <param name="xVariable">The width of the grid</param>
+    /// <param name="yVariable">The length of the grid</param>
+    /// <returns></returns>
+    public Vector2 GetHumanGridPosition(int xVariable, int yVariable, int humanID)
+    {
+        //check if the grid has this human
+        if (!m_HumanGridLocations.Contains(m_HumanGridLocations[humanID]))
+            return m_Grid[(int)m_HumanGridLocations[humanID].gridLocation.x, (int)m_HumanGridLocations[humanID].gridLocation.y];
+
+        IDamagable IDamageble = m_HumanGridLocations[humanID].gridObject.GetComponent<IDamagable>();
+
+        //check if object is trying to go out of bounds
+        if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.y)
+            if (IDamageble != null)
+            {
+                //deal damage if the object is damageble, and return the current position
+                IDamageble.ChangeHealth(-IDamageble.healthpoints);
+                return m_Grid[(int)m_HumanGridLocations[humanID].gridLocation.x, (int)m_HumanGridLocations[humanID].gridLocation.y];
+            }
+
+        //check if you hit a human, if so dont move this movement update
+        for (int i = 0; i < m_HumanGridLocations.Count; i++)
+        {
+            if (m_HumanGridLocations[humanID].gridLocation == m_HumanGridLocations[i].gridLocation)
+            {
+                return m_Grid[(int)m_HumanGridLocations[humanID].gridLocation.x, (int)m_HumanGridLocations[humanID].gridLocation.y];
+            }
+        }
+
+        //check if you hit a zombie, if so dont move this movement update
+        for (int i = 0; i < m_PlayerGridLocations.Count; i++)
+        {
+            if (m_HumanGridLocations[humanID].gridLocation == m_PlayerGridLocations[i].gridLocation)
+            {
+                return m_Grid[(int)m_HumanGridLocations[humanID].gridLocation.x, (int)m_HumanGridLocations[humanID].gridLocation.y];
             }
         }
 
@@ -125,7 +172,7 @@ public class GridManager : MonoBehaviour
             yield return new WaitForSeconds(m_HumanSpawnDelay);
 
             //random amount of humans spawned
-            int random = UnityEngine.Random.Range((int)m_HumansSpawnedPerCycle.x, (int)m_HumansSpawnedPerCycle.y);
+            int random = UnityEngine.Random.Range((int)m_HumansSpawnedPerCycle.x, (int)m_HumansSpawnedPerCycle.y + 1);
 
             //spawn the humans
             for (int i = 0; i < random; i++)
