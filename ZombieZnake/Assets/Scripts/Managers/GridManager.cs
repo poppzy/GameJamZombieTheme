@@ -14,6 +14,8 @@ public class GridManager : MonoBehaviour
         else
             Destroy(this);
 
+        Time.timeScale = 1f;
+
         //create the grid for all objects to move on
         m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
         CreateGrid(m_GridSize.x, m_GridSize.y);
@@ -45,8 +47,11 @@ public class GridManager : MonoBehaviour
 
     [Header("Human")]
     public GameObject m_HumanPrefab; //the human prefab
-    public float m_HumanSpawnDelay = 10f; //the time in seconds it can take for humans to spawn
+    public float m_HumanSpawnDelay = 7f; //the time in seconds it can take for humans to spawn
     public Vector2 m_HumansSpawnedPerCycle = new Vector2(1, 6); //the min and max amount of humans that can spawn per cycle
+
+    //private
+    private int wave = 0; //the current wave
 
     /// <summary>
     /// Create a grid using the a 2D array.
@@ -100,6 +105,7 @@ public class GridManager : MonoBehaviour
                 Destroy(m_HumanGridLocations[i].gridObject);
                 m_HumanGridLocations.RemoveAt(i);
 
+                //add +1 to your score
                 UI_Manager.instance.AddScore(1);
 
                 //spawn a new zombie and set it to the end of the line
@@ -168,8 +174,11 @@ public class GridManager : MonoBehaviour
 
         while (playerIDamageble.isAlive)
         {
-            //wait {m_HumanSpawnDelay} second until you spawn humans again
-            yield return new WaitForSeconds(m_HumanSpawnDelay);
+            //wait {m_HumanSpawnDelay} second until you spawn humans
+            if (wave == 0)
+                yield return new WaitForSeconds(m_HumanSpawnDelay);
+            else
+                yield return new WaitForSeconds(UnityEngine.Random.Range(m_HumanSpawnDelay - 1f, m_HumanSpawnDelay + 1f));
 
             //random amount of humans spawned
             int random = UnityEngine.Random.Range((int)m_HumansSpawnedPerCycle.x, (int)m_HumansSpawnedPerCycle.y + 1);
@@ -187,6 +196,8 @@ public class GridManager : MonoBehaviour
                 human.transform.position = m_Grid[(int)m_HumanGridLocations[m_HumanGridLocations.Count - 1].gridLocation.x, (int)m_HumanGridLocations[m_HumanGridLocations.Count - 1].gridLocation.y];
             }
         }
+
+        wave++;
     }
 
 

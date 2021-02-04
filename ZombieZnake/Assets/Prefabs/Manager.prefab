@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7233391236308398268}
   - component: {fileID: 7233391236308398271}
+  - component: {fileID: 2576034065732710404}
+  - component: {fileID: 4443658756508029526}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -50,5 +52,29 @@ MonoBehaviour:
   m_PlayerGridLocations: []
   m_HumanGridLocations: []
   m_HumanPrefab: {fileID: 1059116608839749920, guid: 69611de810afbf84ca3e11b46ca649cb, type: 3}
-  m_HumanSpawnDelay: 10
-  m_HumansSpawnedPerCycle: {x: 5, y: 10}
+  m_HumanSpawnDelay: 7.6
+  m_HumansSpawnedPerCycle: {x: 1, y: 5}
+--- !u!114 &2576034065732710404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233391236308398269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24643a51194ccb141b1030e7a2df10e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4443658756508029526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233391236308398269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b032b85fcffa91543af313bb7fe585c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

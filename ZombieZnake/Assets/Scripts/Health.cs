@@ -25,6 +25,10 @@ public class Health : MonoBehaviour , IDamagable
     public void Die()
     {
         isAlive = false;
+
+        if (gameObject == PlayerController.instance.gameObject)
+            UI_Manager.instance.ShowGameOver();
+
         StopAllCoroutines();
         Destroy(gameObject);
     }
