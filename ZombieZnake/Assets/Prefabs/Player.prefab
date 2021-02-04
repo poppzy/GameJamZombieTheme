@@ -54,7 +54,7 @@ MonoBehaviour:
   - {fileID: 1375829350984922367}
   - {fileID: 4279607805891182641}
   - {fileID: 1263730676337963616}
-  m_MovementUpdate: 0.5
+  m_MovementUpdate: 0.2
   m_StepSize: 1
   m_Faceing: 0
 --- !u!114 &7123069620026971951
