@@ -109,28 +109,12 @@ public class Player : MonoBehaviour
                     desiredPosition = previousPosition;
 
                 //update the position using the grid
-                m_PlayerZombies[i].transform.position = grid.GetGridPosition((int)desiredPosition.x, (int)desiredPosition.y, gameObject) * m_StepSize;
+                m_PlayerZombies[i].transform.position = grid.GetPlayerGridPosition((int)desiredPosition.x, (int)desiredPosition.y) * m_StepSize;
                 previousPosition = grid.m_PlayerGridLocations[i];
                 m_PlayerZombies[i].GetComponent<Animator>().SetFloat("X", desiredPosition.x - previousPosition.x);
                 m_PlayerZombies[i].GetComponent<Animator>().SetFloat("Y", desiredPosition.y - previousPosition.y);
                 grid.m_PlayerGridLocations[i] = new Vector2(desiredPosition.x, desiredPosition.y);
             }
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Human"))
-        {
-            Destroy(collision.gameObject);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Human"))
-        {
-            Destroy(collision.gameObject);
         }
     }
 }

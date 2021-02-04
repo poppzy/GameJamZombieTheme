@@ -45,4 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GridSize: {x: 68, y: 38}
   m_GridOffset: {x: -34, y: 19}
-  m_PlayerGridPositions: []
+  m_PlayerGridLocations: []
+  m_HumanGridLocations: []
+  m_HumanPrefab: {fileID: 1059116608839749920, guid: 69611de810afbf84ca3e11b46ca649cb, type: 3}
+  m_HumanSpawnDelay: 20
+  m_HumansSpawnedPerCycle: {x: 1, y: 6}

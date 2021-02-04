@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +34,7 @@ public class GridManager : MonoBehaviour
 
     [Header("GridLocations")]
     public List<Vector2> m_PlayerGridLocations = new List<Vector2>(); //the player locations on the grid
-    public List<Vector2> m_HumanGridLocations = new List<Vector2>(); //the human locations on the grid
+    public List<GridObject> m_HumanGridLocations = new List<GridObject>(); //the human locations on the grid
 
     [Header("Human")]
     public GameObject m_HumanPrefab;
@@ -62,9 +63,9 @@ public class GridManager : MonoBehaviour
     /// <param name="xVariable">The width of the grid</param>
     /// <param name="yVariable">The length of the grid</param>
     /// <returns></returns>
-    public Vector2 GetGridPosition(int xVariable, int yVariable, GameObject _object)
+    public Vector2 GetPlayerGridPosition(int xVariable, int yVariable)
     {
-        IDamagable IDamageble = _object.GetComponent<IDamagable>();
+        IDamagable IDamageble = Player.instance.GetComponent<IDamagable>();
 
         //check if object is traying to go out of bounds
         if (xVariable < 0 || xVariable >= m_GridSize.x || yVariable < 0 || yVariable >= m_GridSize.x)
@@ -83,10 +84,22 @@ public class GridManager : MonoBehaviour
                     IDamageble.ChangeHealth(-IDamageble.healthpoints);
         }
 
+        foreach (var humans in m_HumanGridLocations)
+        {
+            if (m_PlayerGridLocations[0] == humans.gridLocation)
+            {
+                //TODO: eat human
+            }
+        }
+
         //return and change the new position
         return m_Grid[xVariable, yVariable];
     }
 
+    /// <summary>
+    /// Spawn a random amount of humans every {m_HumanSpawnDelay} amount of seconds
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator SpawnHumans()
     {
         IDamagable playerIDamageble = Player.instance.GetComponent<IDamagable>();
@@ -97,20 +110,27 @@ public class GridManager : MonoBehaviour
             yield return new WaitForSeconds(m_HumanSpawnDelay);
 
             //random amount of humans spawned
-            int random = Random.Range((int)m_HumansSpawnedPerCycle.x, (int)m_HumansSpawnedPerCycle.y);
+            int random = UnityEngine.Random.Range((int)m_HumansSpawnedPerCycle.x, (int)m_HumansSpawnedPerCycle.y);
 
             //spawn the humans
             for (int i = 0; i < random; i++)
             {
                 GameObject human = Instantiate(m_HumanPrefab);
 
-                int x = Random.Range(0, (int)m_GridSize.x);
-                int y = Random.Range(0, (int)m_GridSize.y);
+                int x = UnityEngine.Random.Range(0, (int)m_GridSize.x);
+                int y = UnityEngine.Random.Range(0, (int)m_GridSize.y);
 
-                m_HumanGridLocations.Add(new Vector2(x, y));
+                m_HumanGridLocations.Add(new GridObject());
 
-                human.transform.position = m_Grid[(int)m_HumanGridLocations[i].x, (int)m_HumanGridLocations[i].y];
+                human.transform.position = m_Grid[(int)m_HumanGridLocations[m_HumanGridLocations.Count-1].x, (int)m_HumanGridLocations[m_HumanGridLocations.Count-1].y];
             }
         }
+    }
+
+    [Serializable]
+    struct GridObject
+    {
+        public GameObject gridObject;
+        public Vector2 gridLocation;
     }
 }

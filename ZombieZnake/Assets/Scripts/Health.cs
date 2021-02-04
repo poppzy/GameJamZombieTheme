@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class Health : MonoBehaviour , IDamagable
 {
-    [Header("Health")]
-    public int m_StartingHealth = 10;
-
     //private
     public int healthpoints { get; private set; }
     public bool isAlive { get; private set; }
 
-    void Start()
+    private void Awake()
     {
-        healthpoints = m_StartingHealth;
         isAlive = true;
+        healthpoints = 1;
     }
 
     public void ChangeHealth(int _value)
