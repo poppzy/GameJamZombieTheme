@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e89186eec490e24da65afad37925c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GridSize: {x: 70, y: 38}
-  m_GridOffset: {x: -35, y: 19}
+  m_GridSize: {x: 68, y: 38}
+  m_GridOffset: {x: -34, y: 19}
   m_PlayerGridPositions: []

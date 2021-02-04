@@ -5,6 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Player : MonoBehaviour
 {
+    public static Player instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
+    }
+
     public enum Direction : int
     {
         Up = 0,
@@ -72,7 +82,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(m_MovementUpdate);
 
             //the desired position on the grid
-            Vector2 desiredPosition = grid.m_PlayerGridPositions[0];
+            Vector2 desiredPosition = grid.m_PlayerGridLocations[0];
             Vector2 previousPosition = Vector2.zero;
 
             switch (m_Faceing)
@@ -100,9 +110,25 @@ public class Player : MonoBehaviour
 
                 //update the position using the grid
                 m_PlayerZombies[i].transform.position = grid.GetGridPosition((int)desiredPosition.x, (int)desiredPosition.y, gameObject) * m_StepSize;
-                previousPosition = grid.m_PlayerGridPositions[i];
-                grid.m_PlayerGridPositions[i] = new Vector2(desiredPosition.x, desiredPosition.y);
+                previousPosition = grid.m_PlayerGridLocations[i];
+                grid.m_PlayerGridLocations[i] = new Vector2(desiredPosition.x, desiredPosition.y);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Human"))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Human"))
+        {
+            Destroy(collision.gameObject);
         }
     }
 }

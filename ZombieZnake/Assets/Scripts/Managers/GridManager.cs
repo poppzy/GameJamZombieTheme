@@ -15,21 +15,30 @@ public class GridManager : MonoBehaviour
 
         m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
         CreateGrid(m_GridSize.x, m_GridSize.y);
-        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
-        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 1));
-        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 2));
-        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 3));
-        m_PlayerGridPositions.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 4));
+        m_PlayerGridLocations.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
+        m_PlayerGridLocations.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 1));
+        m_PlayerGridLocations.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 2));
 
     }
 
-    [Header("Grid")]
-    public Vector2 m_GridSize;
-    public Vector2 m_GridOffset;
-    public Vector2[,] m_Grid;
+    private void Start()
+    {
+        StartCoroutine(SpawnHumans());
+    }
 
-    [Header("Objects")]
-    public List<Vector2> m_PlayerGridPositions = new List<Vector2>(); //the player location on the grid
+    [Header("Grid")]
+    public Vector2 m_GridSize; //the size of the grid
+    public Vector2 m_GridOffset; //the offset the grid will be created at
+    public Vector2[,] m_Grid; //a 2D array of the grid
+
+    [Header("GridLocations")]
+    public List<Vector2> m_PlayerGridLocations = new List<Vector2>(); //the player locations on the grid
+    public List<Vector2> m_HumanGridLocations = new List<Vector2>(); //the human locations on the grid
+
+    [Header("Human")]
+    public GameObject m_HumanPrefab;
+    public float m_HumanSpawnDelay = 10f;
+    public Vector2 m_HumansSpawnedPerCycle = new Vector2(1, 6);
 
     /// <summary>
     /// Create a grid using the a 2D array.
@@ -43,7 +52,6 @@ public class GridManager : MonoBehaviour
             for (int x = 0; x < _width; x++)
             {
                 m_Grid[x, y] = new Vector2(m_GridOffset.x + x, m_GridOffset.y - y);
-                //Debug.Log($"{x} = {m_GridOffset.x + x}, {y} = {m_GridOffset.y - y}.");
             }
         }
     }
@@ -64,17 +72,45 @@ public class GridManager : MonoBehaviour
             {
                 //deal damage if the object is damageble, and return the current position
                 IDamageble.ChangeHealth(-IDamageble.healthpoints);
-                return m_Grid[(int)m_PlayerGridPositions[0].x, (int)m_PlayerGridPositions[0].y];
+                return m_Grid[(int)m_PlayerGridLocations[0].x, (int)m_PlayerGridLocations[0].y];
             }
 
-        for (int i = 0; i < m_PlayerGridPositions.Count; i++)
+        //check if the player hit itself, if it did kill the player
+        for (int i = 0; i < m_PlayerGridLocations.Count; i++)
         {
             if (i != 0)
-                if (m_PlayerGridPositions[0] == m_PlayerGridPositions[i])
+                if (m_PlayerGridLocations[0] == m_PlayerGridLocations[i])
                     IDamageble.ChangeHealth(-IDamageble.healthpoints);
         }
 
         //return and change the new position
         return m_Grid[xVariable, yVariable];
+    }
+
+    private IEnumerator SpawnHumans()
+    {
+        IDamagable playerIDamageble = Player.instance.GetComponent<IDamagable>();
+
+        while (playerIDamageble.isAlive)
+        {
+            //wait {m_HumanSpawnDelay} second until you spawn humans again
+            yield return new WaitForSeconds(m_HumanSpawnDelay);
+
+            //random amount of humans spawned
+            int random = Random.Range((int)m_HumansSpawnedPerCycle.x, (int)m_HumansSpawnedPerCycle.y);
+
+            //spawn the humans
+            for (int i = 0; i < random; i++)
+            {
+                GameObject human = Instantiate(m_HumanPrefab);
+
+                int x = Random.Range(0, (int)m_GridSize.x);
+                int y = Random.Range(0, (int)m_GridSize.y);
+
+                m_HumanGridLocations.Add(new Vector2(x, y));
+
+                human.transform.position = m_Grid[(int)m_HumanGridLocations[i].x, (int)m_HumanGridLocations[i].y];
+            }
+        }
     }
 }
