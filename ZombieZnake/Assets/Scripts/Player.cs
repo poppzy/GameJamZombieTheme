@@ -13,6 +13,16 @@ public class Player : MonoBehaviour
             instance = this;
         else
             Destroy(this);
+
+        m_PlayerZombies = new List<GameObject>();
+        Transform[] children = GetComponentsInChildren<Transform>();
+        foreach (var child in children)
+        {
+            if (child.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                m_PlayerZombies.Add(child.gameObject);
+            }
+        }
     }
 
     public enum Direction : int
@@ -35,15 +45,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        m_PlayerZombies = new List<GameObject>();
-        Transform[] children = GetComponentsInChildren<Transform>();
-        foreach (var child in children)
-        {
-            if (child.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                m_PlayerZombies.Add(child.gameObject);
-            }
-        }
         healthScript = GetComponent<Health>();
         grid = GridManager.instance;
         //inputQueue = new List<int>();
@@ -82,7 +83,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(m_MovementUpdate);
 
             //the desired position on the grid
-            Vector2 desiredPosition = grid.m_PlayerGridLocations[0];
+            Vector2 desiredPosition = grid.m_PlayerGridLocations[0].gridLocation;
             Vector2 previousPosition = Vector2.zero;
 
             switch (m_Faceing)
@@ -110,10 +111,10 @@ public class Player : MonoBehaviour
 
                 //update the position using the grid
                 m_PlayerZombies[i].transform.position = grid.GetPlayerGridPosition((int)desiredPosition.x, (int)desiredPosition.y) * m_StepSize;
-                previousPosition = grid.m_PlayerGridLocations[i];
+                previousPosition = grid.m_PlayerGridLocations[i].gridLocation;
                 m_PlayerZombies[i].GetComponent<Animator>().SetFloat("X", desiredPosition.x - previousPosition.x);
                 m_PlayerZombies[i].GetComponent<Animator>().SetFloat("Y", desiredPosition.y - previousPosition.y);
-                grid.m_PlayerGridLocations[i] = new Vector2(desiredPosition.x, desiredPosition.y);
+                grid.m_PlayerGridLocations[i] = new GridManager.GridObject(m_PlayerZombies[i], new Vector2(desiredPosition.x, desiredPosition.y));
             }
         }
     }

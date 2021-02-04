@@ -16,15 +16,16 @@ public class GridManager : MonoBehaviour
 
         m_Grid = new Vector2[(int)m_GridSize.x, (int)m_GridSize.y];
         CreateGrid(m_GridSize.x, m_GridSize.y);
-        m_PlayerGridLocations.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2));
-        m_PlayerGridLocations.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 1));
-        m_PlayerGridLocations.Add(new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 2));
 
     }
 
     private void Start()
     {
         StartCoroutine(SpawnHumans());
+
+        m_PlayerGridLocations.Add(new GridObject(Player.instance.m_PlayerZombies[0], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2)));
+        m_PlayerGridLocations.Add(new GridObject(Player.instance.m_PlayerZombies[1], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 1)));
+        m_PlayerGridLocations.Add(new GridObject(Player.instance.m_PlayerZombies[2], new Vector2(m_GridSize.x / 2, m_GridSize.y / 2 + 2)));
     }
 
     [Header("Grid")]
@@ -33,7 +34,7 @@ public class GridManager : MonoBehaviour
     public Vector2[,] m_Grid; //a 2D array of the grid
 
     [Header("GridLocations")]
-    public List<Vector2> m_PlayerGridLocations = new List<Vector2>(); //the player locations on the grid
+    public List<GridObject> m_PlayerGridLocations = new List<GridObject>(); //the player locations on the grid
     public List<GridObject> m_HumanGridLocations = new List<GridObject>(); //the human locations on the grid
 
     [Header("Human")]
@@ -73,22 +74,24 @@ public class GridManager : MonoBehaviour
             {
                 //deal damage if the object is damageble, and return the current position
                 IDamageble.ChangeHealth(-IDamageble.healthpoints);
-                return m_Grid[(int)m_PlayerGridLocations[0].x, (int)m_PlayerGridLocations[0].y];
+                return m_Grid[(int)m_PlayerGridLocations[0].gridLocation.x, (int)m_PlayerGridLocations[0].gridLocation.y];
             }
 
         //check if the player hit itself, if it did kill the player
         for (int i = 0; i < m_PlayerGridLocations.Count; i++)
         {
             if (i != 0)
-                if (m_PlayerGridLocations[0] == m_PlayerGridLocations[i])
+                if (m_PlayerGridLocations[0].gridLocation == m_PlayerGridLocations[i].gridLocation)
                     IDamageble.ChangeHealth(-IDamageble.healthpoints);
         }
 
         foreach (var humans in m_HumanGridLocations)
         {
-            if (m_PlayerGridLocations[0] == humans.gridLocation)
+            if (m_PlayerGridLocations[0].gridLocation == humans.gridLocation)
             {
-                //TODO: eat human
+                Destroy(humans.gridObject);
+
+                
             }
         }
 
