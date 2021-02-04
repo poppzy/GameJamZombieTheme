@@ -35,6 +35,10 @@ public class GridManager : MonoBehaviour
     public Vector2 m_GridOffset; //the offset the grid will be created at
     public Vector2[,] m_Grid; //a 2D array of the grid
 
+    [Header("Movement")]
+    public float m_MovementUpdate = 0.2f; //the amount time it takes to make a movementupdate 
+    public float m_StepSize = 1f; //the amount of steps taken per movementupdate
+
     [Header("GridLocations")]
     public List<GridObject> m_PlayerGridLocations = new List<GridObject>(); //the player locations on the grid
     public List<GridObject> m_HumanGridLocations = new List<GridObject>(); //the human locations on the grid

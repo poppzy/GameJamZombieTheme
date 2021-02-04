@@ -37,8 +37,6 @@ public class PlayerController : MonoBehaviour
     [Header("Player")]
     public GameObject m_ZombiePrefab; //the prefab of the zombie
     public List<GameObject> m_PlayerZombies; //the list of zombies behind you
-    public float m_MovementUpdate = 0.5f; //the amount of meter moved per movementupdate 
-    public float m_StepSize = 1f; //the amount of steps taken per movementupdate
     public Direction m_Faceing; //the direction you are facing
 
     //private
@@ -49,8 +47,6 @@ public class PlayerController : MonoBehaviour
     {
         healthScript = GetComponent<Health>();
         grid = GridManager.instance;
-        //inputQueue = new List<int>();
-
         StartCoroutine(Movement());
     }
 
@@ -82,7 +78,7 @@ public class PlayerController : MonoBehaviour
         while (healthScript.isAlive)
         {
             //wait for {m_MovementUpdate} amount of seconds
-            yield return new WaitForSeconds(m_MovementUpdate);
+            yield return new WaitForSeconds(GridManager.instance.m_MovementUpdate);
 
             //the desired position on the grid
             Vector2 desiredPosition = grid.m_PlayerGridLocations[0].gridLocation;
@@ -112,7 +108,7 @@ public class PlayerController : MonoBehaviour
                     desiredPosition = previousPosition;
 
                 //update the position using the grid
-                m_PlayerZombies[i].transform.position = grid.GetPlayerGridPosition((int)desiredPosition.x, (int)desiredPosition.y) * m_StepSize;
+                m_PlayerZombies[i].transform.position = grid.GetPlayerGridPosition((int)desiredPosition.x, (int)desiredPosition.y) * GridManager.instance.m_StepSize;
                 previousPosition = grid.m_PlayerGridLocations[i].gridLocation;
                 m_PlayerZombies[i].GetComponent<Animator>().SetFloat("X", desiredPosition.x - previousPosition.x);
                 m_PlayerZombies[i].GetComponent<Animator>().SetFloat("Y", desiredPosition.y - previousPosition.y);

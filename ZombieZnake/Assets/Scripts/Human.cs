@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Human : MonoBehaviour
 {
     public enum Direction : int
@@ -13,17 +14,27 @@ public class Human : MonoBehaviour
     }
 
     [Header("Human")]
-    public float m_MovementUpdate = 0.5f; //the amount of meter moved per movementupdate 
-    public float m_StepSize = 1f; //the amount of steps taken per movementupdate
     public Direction m_Faceing; //the direction you are facing
 
-    private void Start()
+    //private
+    private Health healthScript;
+    private GridManager grid;
+
+    void Start()
     {
+        healthScript = GetComponent<Health>();
+        grid = GridManager.instance;
         StartCoroutine(Movement());
     }
 
     private IEnumerator Movement()
     {
-        yield return new WaitForSeconds(m_MovementUpdate);
+        while (healthScript.isAlive)
+        {
+            yield return new WaitForSeconds(GridManager.instance.m_MovementUpdate);
+
+            int x = Random.Range(-1, 2);
+            int y = Random.Range(-1, 2);
+        }
     }
 }
